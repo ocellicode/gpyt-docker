@@ -1,4 +1,20 @@
 services:
+  commandbus:
+    image: pcp1976/ocellicode-gpyt-commandbus:0.0.7
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    depends_on:
+      - fluentd
+      - db
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: localhost:24224
+        fluentd-async-connect: "true"
+    restart: always
+
   db:
     image: postgres
     restart: always
@@ -16,25 +32,25 @@ services:
         fluentd-address: localhost:24224
         fluentd-async-connect: "true"
 
-  redis:
-    image: redis
-    volumes:
-      - redis-data:/data
-    depends_on:
-      - fluentd
-    ports:
-      - "6379:6379"
-    logging:
-      driver: fluentd
-      options:
-        fluentd-address: localhost:24224
-        fluentd-async-connect: "true"
-    restart: always
+  # redis:
+  #   image: redis
+  #   volumes:
+  #     - redis-data:/data
+  #   depends_on:
+  #     - fluentd
+  #   ports:
+  #     - "6379:6379"
+  #   logging:
+  #     driver: fluentd
+  #     options:
+  #       fluentd-address: localhost:24224
+  #       fluentd-async-connect: "true"
+  #   restart: always
 
   adminer:
     image: adminer
     ports:
-      - 8080:8080
+      - 8181:8080
     depends_on:
       - fluentd
     logging:
@@ -60,7 +76,6 @@ services:
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.13.1
-    container_name: elasticsearch
     environment:
       - "discovery.type=single-node"
     expose:
@@ -81,4 +96,4 @@ services:
 
 volumes:
   postgres-data:
-  redis-data:
+  # redis-data:
