@@ -83,6 +83,8 @@ services:
     ports:
       - "9200:9200"
     restart: always
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.13.1
@@ -96,4 +98,5 @@ services:
 
 volumes:
   postgres-data:
+  esdata:
   # redis-data:
