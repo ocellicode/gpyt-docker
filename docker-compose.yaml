@@ -15,6 +15,22 @@ services:
         fluentd-async-connect: "true"
     restart: always
 
+  eventbus:
+    image: pcp1976/ocellicode-gpyt-eventbus:0.0.1
+    ports:
+      - "8081:8080"
+    env_file:
+      - .env
+    depends_on:
+      - fluentd
+      - db
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: localhost:24224
+        fluentd-async-connect: "true"
+    restart: always
+
   db:
     image: postgres
     restart: always
