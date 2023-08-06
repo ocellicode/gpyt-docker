@@ -16,7 +16,7 @@ services:
     restart: always
 
   eventbus:
-    image: pcp1976/ocellicode-gpyt-eventbus:0.0.1
+    image: pcp1976/ocellicode-gpyt-eventbus:0.0.2
     ports:
       - "8081:8080"
     env_file:
