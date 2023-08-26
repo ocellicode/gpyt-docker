@@ -1,6 +1,6 @@
 services:
   commandbus:
-    image: pcp1976/ocellicode-gpyt-commandbus:0.0.7
+    image: pcp1976/ocellicode-gpyt-commandbus:0.0.8
     ports:
       - "8080:8080"
     environment:
