@@ -1,3 +1,0 @@
-CREATE USER vector_user WITH PASSWORD 'vector_password';
-CREATE DATABASE vector;
-GRANT ALL PRIVILEGES ON DATABASE vector TO vector_user;

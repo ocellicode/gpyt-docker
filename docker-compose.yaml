@@ -3,8 +3,9 @@ services:
     image: pcp1976/ocellicode-gpyt-commandbus:0.0.7
     ports:
       - "8080:8080"
-    env_file:
-      - .env
+    environment:
+      - GPYT_DB_DSN=postgresql://command_user:command_password@db/command
+      - MIGRATE=1
     depends_on:
       - fluentd
       - db
@@ -16,11 +17,12 @@ services:
     restart: always
 
   eventbus:
-    image: pcp1976/ocellicode-gpyt-eventbus:0.0.2
+    image: pcp1976/ocellicode-gpyt-eventbus:0.0.4
     ports:
       - "8081:8080"
-    env_file:
-      - .env
+    environment:
+      - GPYT_DB_DSN=postgresql://event_user:event_password@db/event
+      - MIGRATE=1
     depends_on:
       - fluentd
       - db
@@ -47,21 +49,6 @@ services:
       options:
         fluentd-address: localhost:24224
         fluentd-async-connect: "true"
-
-  # redis:
-  #   image: redis
-  #   volumes:
-  #     - redis-data:/data
-  #   depends_on:
-  #     - fluentd
-  #   ports:
-  #     - "6379:6379"
-  #   logging:
-  #     driver: fluentd
-  #     options:
-  #       fluentd-address: localhost:24224
-  #       fluentd-async-connect: "true"
-  #   restart: always
 
   adminer:
     image: adminer
@@ -100,7 +87,7 @@ services:
       - "9200:9200"
     restart: always
     volumes:
-      - esdata:/usr/share/elasticsearch/data
+      - es-data:/usr/share/elasticsearch/data
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.13.1
@@ -114,5 +101,4 @@ services:
 
 volumes:
   postgres-data:
-  esdata:
-  # redis-data:
+  es-data:
